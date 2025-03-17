@@ -1,0 +1,1315 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ANSEUR Mohamed - Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .font-code {font-family: 'Fira Code', monospace;}
+        .font-main {font-family: 'Poppins', sans-serif;}
+        .terminal {background-color: #1a1a1a;border-radius: 10px;padding: 20px;font-family: 'Fira Code', monospace;color: #00ff00;box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);}
+        .terminal-line {margin: 8px 0;}
+        .terminal-prompt::before {content: "$ ";color: #00ff00;}
+        .dark {background-color: #1a1a1a;color: #ffffff;}
+        .dark .bg-white {background-color: #2d2d2d;color: #ffffff;}
+        .dark .text-gray-600 {color: #d1d1d1;}
+        .dark .text-gray-700 {color: #ffffff;}
+        .dark .text-gray-800 {color: #ffffff;}
+        .dark .bg-gray-50 {background-color: #1f1f1f;}
+        .dark .shadow-lg {box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);}
+        .hero-section {min-height: 100vh;display: flex;align-items: center;justify-content: center;}
+        .modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal.active {
+    display: flex;
+}
+
+.modal-content {
+    position: relative;
+    max-height: 90vh;
+    max-width: 90vw;
+}
+
+#modalImage {
+    max-height: 85vh;
+    object-fit: contain;
+}
+        @keyframes modalFadeIn {
+            from {opacity: 0;transform: translateY(-20px);}
+            to {opacity: 1;transform: translateY(0);}
+        }
+        .project-card {cursor: pointer;}
+        .dark .bg-white {background-color: #2d2d2d;}
+        .dark input, .dark textarea {background-color: #1a1a1a;border-color: #4a4a4a;color: #ffffff;}
+        .dark input::placeholder, .dark textarea::placeholder {color: #6b7280;}
+        .dark input:focus, .dark textarea:focus {border-color: #3b82f6;box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);}
+        .dark label {color: #e5e7eb;}
+        .terminal {background-color: #1e1e1e;border-radius: 10px;padding: 20px;font-family: 'Fira Code', monospace;color: #d4d4d4;box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);}
+        .terminal pre {margin: 0;line-height: 1.5;}
+        .dark .terminal {background-color: #2d2d2d;}
+    </style>
+</head>
+<body class="bg-gray-50 font-main">
+    <nav class="bg-white shadow-lg fixed w-full z-10">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center justify-between w-full">
+                    <span class="font-semibold text-gray-800 text-lg">M.Anseur</span>
+                    <div class="hidden md:flex items-center space-x-8">
+                        <a href="#accueil" class="py-4 px-2 text-gray-700 hover:text-blue-500 transition duration-300">Accueil</a>
+                        <a href="#about" class="py-4 px-2 text-gray-700 hover:text-blue-500 transition duration-300">À propos</a>
+                        <a href="#bts" class="py-4 px-2 text-gray-700 hover:text-blue-500 transition duration-300">BTS SIO</a>
+                        <a href="#parcours" class="py-4 px-2 text-gray-700 hover:text-blue-500 transition duration-300">Parcours</a>
+                        <a href="#skills" class="py-4 px-2 text-gray-700 hover:text-blue-500 transition duration-300">Compétences</a>
+                        <a href="#projects" class="py-4 px-2 text-gray-700 hover:text-blue-500 transition duration-300">Projets</a>
+                        <a href="#veille" class="py-4 px-2 text-gray-700 hover:text-blue-500 transition duration-300">Veille</a>
+                        <a href="#e4" class="py-4 px-2 text-gray-700 hover:text-blue-500 transition duration-300">Épreuve E4</a>
+                        <a href="#contact" class="py-4 px-2 text-gray-700 hover:text-blue-500 transition duration-300">Contact</a>
+                        <button id="theme-toggle" class="p-2 rounded-lg bg-gray-200 dark:bg-gray-700">
+                            <svg id="theme-toggle-light" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"/>
+                            </svg>
+                            <svg id="theme-toggle-dark" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <section id="accueil" class="hero-section">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex flex-col md:flex-row items-center justify-center gap-12">
+                <div class="md:w-1/2 text-center md:text-left">
+                    <h1 class="text-4xl md:text-6xl font-bold text-gray-800 mb-4">
+                        ANSEUR Mohamed
+                    </h1>
+                    <p class="text-xl text-gray-600 mb-8">
+                        Etudiant en BTS SIO option SISR
+                    </p>
+                    <a href="#contact" class="bg-blue-500 text-white px-8 py-3 rounded-lg hover:bg-blue-600 transition duration-300">
+                        Me contacter
+                    </a>
+                </div>
+                <div class="md:w-1/2">
+                    <div class="terminal">
+                        <div class="flex items-center justify-between mb-2 text-gray-400">
+                            <div class="flex space-x-2">
+                                <div class="w-3 h-3 rounded-full bg-purple-700"></div> <!-- Violet sombre pour l'ambiance technique -->
+                                <div class="w-3 h-3 rounded-full bg-indigo-500"></div> <!-- Bleu indigo pour ajouter une touche sécuritaire -->
+                                <div class="w-3 h-3 rounded-full bg-blue-500"></div> <!-- Bleu pour l'effet calme et sécurisé -->
+                            </div>
+                            <span class="text-sm text-violet-400">NetworkSecurePortfolio.java</span>
+                        </div>
+                        <div class="text-sm">
+                            <pre class="text-violet-300"><span class="text-gray-400">public class</span> NetworkSecurePortfolio {</pre>
+                            <pre class="text-violet-300">    <span class="text-gray-400">private final</span> String name = <span class="text-violet-100">"Mohamed ANSEUR"</span>;</pre>
+                            <pre class="text-violet-300">    <span class="text-gray-400">private final</span> String formation = <span class="text-violet-100">"BTS SIO SISR"</span>;</pre>
+                            <pre class="text-violet-300">    <span class="text-gray-400">private final</span> String[] skills = {</pre>
+                            <pre class="text-violet-300">        <span class="text-violet-100">"Gestion de réseaux LAN/WAN"</span>, <span class="text-violet-100">"Sécurisation des réseaux"</span>,</pre>
+                            <pre class="text-violet-300">        <span class="text-violet-100">"Configuration VPN et VLAN"</span>, <span class="text-violet-100">"Administration de serveurs réseau"</span></pre>
+                            <pre class="text-violet-300">    };</pre>
+                            <pre class="text-violet-300">}</pre>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="about" class="py-24 bg-white dark:bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4">
+            <h2 class="text-4xl font-bold text-center mb-16 dark:text-white">À propos</h2>
+            <div class="max-w-3xl mx-auto text-center">
+                <h3 class="text-2xl font-bold mb-6 dark:text-purple-100">Etudiant en BTS SIO option SISR</h3>
+                <p class="text-gray-600 dark:text-gray-300 mb-6 leading-relaxed text-justify hyphens-auto">
+                    Actuellement en BTS SIO, option SISR, je me spécialise dans la gestion et la sécurisation des infrastructures informatiques. Grâce à une formation solide, j'acquiers des compétences pratiques dans l’administration des systèmes (Windows, Linux), la gestion de réseaux (LAN, WAN, VPN, VLAN) ainsi que la mise en place de solutions de sécurité (firewall, chiffrement, gestion des droits d’accès). J'interviens sur des projets allant de l'installation de serveurs à la sécurisation des données en passant par le déploiement et la maintenance des infrastructures réseau, tout en veillant à leur performance et leur pérennité.
+                </p>
+                <p class="text-gray-600 dark:text-gray-300 mb-8 leading-relaxed">
+                    <!-- Si tu veux ajouter du texte ici, tu peux le faire -->
+                </p>
+                <div class="grid grid-cols-2 gap-6 max-w-xl mx-auto">
+                    <!-- Nouveau bloc CV -->
+                    <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                        <h4 class="font-bold text-lg mb-2 dark:text-white">CV</h4>
+                        <a href="cv/CV-F%20Anseur.pdf" target="_blank" class="text-gray-600 dark:text-gray-300 hover:text-blue-500">
+                            <p>Consulter mon CV (PDF)</p>
+                        </a>
+                    </div>
+                    <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                        <h4 class="font-bold text-lg mb-2 dark:text-white">Localisation</h4>
+                        <p class="text-gray-600 dark:text-gray-300">Paris, France</p>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </section>
+    <section id="bts" class="py-24 bg-gray-50 dark:bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4">
+            <h2 class="text-4xl font-bold text-center mb-16 dark:text-blue-200">BTS SIO</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <!-- Option SISR -->
+                <div class="bg-white dark:bg-gray-700 rounded-xl p-6 shadow-lg">
+                    <div class="flex flex-col items-center mb-6">
+                        <img src="img/imageserveur2.jpeg" alt="Option SISR" class="w-full h-48 object-cover rounded-lg mb-6">
+                        <h3 class="text-2xl font-bold dark:text-blue-200">Option SISR</h3>
+                        <p class="text-gray-500 dark:text-gray-300">Solutions d'Infrastructure, Systèmes et Réseaux</p>
+                    </div>
+                    <div class="space-y-4">
+                        <p class="text-gray-600 dark:text-gray-300">
+                            L'option SISR forme des spécialistes des réseaux et équipements informatiques :
+                        </p>
+                        <ul class="list-disc list-inside text-gray-600 dark:text-gray-300 space-y-2">
+                            <li>Administration des systèmes</li>
+                            <li>Maintenance des réseaux</li>
+                            <li>Sécurité informatique</li>
+                            <li>Configuration des serveurs</li>
+                            <li>Support technique aux utilisateurs</li>
+                        </ul>
+                    </div>
+                </div>
+    
+                <!-- Option SLAM -->
+                <div class="bg-white dark:bg-gray-700 rounded-xl p-6 shadow-lg">
+                    <div class="flex flex-col items-center mb-6">
+                        <img src="img/imageslam.jpg" alt="Option SLAM" class="w-full h-48 object-cover rounded-lg mb-6">
+                        <h3 class="text-2xl font-bold dark:text-white">Option SLAM</h3>
+                        <p class="text-gray-500 dark:text-gray-300">Solutions Logicielles et Applications Métiers</p>
+                    </div>
+                    <div class="space-y-4">
+                        <p class="text-gray-600 dark:text-gray-300">
+                            L'option SLAM forme des développeurs d'applications :
+                        </p>
+                        <ul class="list-disc list-inside text-gray-600 dark:text-gray-300 space-y-2">
+                            <li>Développement d'applications</li>
+                            <li>Programmation orientée objet</li>
+                            <li>Développement web</li>
+                            <li>Bases de données</li>
+                            <li>Cybersécurité des applications</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="max-w-4xl mx-auto mt-16 px-4">
+            <div class="max-w-4xl mx-auto mt-16 px-4">
+                <!-- Débouchés professionnels -->
+                <div class="bg-white dark:bg-gray-700 rounded-xl p-8 shadow-lg mb-8">
+                    <h3 class="text-2xl font-bold text-center mb-6 dark:text-white">Métiers après le BTS</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="space-y-4">
+                            <h4 class="font-semibold text-center dark:text-white">Option SLAM</h4>
+                            <ul class="list-disc list-inside text-gray-600 dark:text-gray-300">
+                                <li>Développeur d'applications</li>
+                                <li>Développeur web</li>
+                                <li>Analyste programmeur</li>
+                                <li>Développeur full-stack</li>
+                                <li>Intégrateur web</li>
+                            </ul>
+                        </div>
+                        <div class="space-y-4">
+                            <h4 class="font-semibold text-center dark:text-white">Option SISR</h4>
+                            <ul class="list-disc list-inside text-gray-600 dark:text-gray-300">
+                                <li>Administrateur systèmes et réseaux</li>
+                                <li>Technicien support informatique</li>
+                                <li>Administrateur de bases de données</li>
+                                <li>Technicien sécurité</li>
+                                <li>Responsable parc informatique</li>
+                            </ul>
+                    </div>
+                    </div>
+                </div>
+            
+                <!-- Poursuite d'études -->
+<div class="bg-white dark:bg-gray-800 rounded-xl p-8 shadow-xl transition-all hover:shadow-2xl">
+    <h3 class="text-3xl font-bold text-center mb-6 dark:text-white">Poursuite d'études</h3>
+    <div class="space-y-4">
+        <p class="text-gray-600 dark:text-gray-300 text-center">
+            Après le BTS SIO, plusieurs opportunités s'offrent aux étudiants. Voici quelques options pour la suite :
+        </p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Section Licence Professionnelle -->
+            <div class="space-y-4">
+                <h4 class="font-semibold text-xl text-pink-200 dark:text-pink-200 flex items-center space-x-2">
+                    <!-- Icône Licence Pro -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-pink-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                    </svg>
+                    <span>Licence Pro</span>
+                </h4>
+                <ul class="list-disc list-inside text-gray-600 dark:text-gray-300 space-y-2">
+                    <li>Développement Web</li>
+                    <li>Cybersécurité</li>
+                    <li>Administration Systèmes et Réseaux</li>
+                    <li>Cloud Computing</li>
+                    <li>DevOps</li>
+                </ul>
+            </div>
+
+            <!-- Section Licence Générale -->
+            <div class="space-y-4">
+                <h4 class="font-semibold text-xl text-blue-300 dark:text-blue-300 flex items-center space-x-2">
+                    <!-- Icône Licence Générale -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                    </svg>
+                    <span>Licence Générale</span>
+                </h4>
+                <ul class="list-disc list-inside text-gray-600 dark:text-gray-300 space-y-2">
+                    <li>Licence Informatique</li>
+                    <li>Licence Mathématiques et Informatique</li>
+                    <li>Licence en Réseaux et Télécommunications</li>
+                    <li>Licence Gestion des Systèmes d'Information</li>
+                </ul>
+            </div>
+                        <!-- Section Bachelor / École d'ingénieur -->
+                        <div class="space-y-4">
+                            <h4 class="font-semibold text-xl text-purple-300 dark:text-purple-300 flex items-center space-x-2">
+                                <!-- Icône Bachelor -->
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-purple-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                                </svg>
+                                <span>École d'ingénieur</span>
+                            </h4>
+                            <ul class="list-disc list-inside text-gray-600 dark:text-gray-300 space-y-2">
+                                <li>Master en Informatique</li>
+                                <li>Master en Cybersécurité</li>
+                                <li>Blockchain</li>
+                                <li>Intelligence Artificielle</li>
+                            </ul>
+                        </div>
+        </div>
+    </div>
+</div>
+
+                </div>
+            </div>
+    </section>
+
+
+
+    
+    <section id="parcours" class="py-24 bg-white dark:bg-gray-900">
+        <div class="max-w-5xl mx-auto px-4">
+            <h2 class="text-4xl font-bold text-center mb-16 dark:text-purple-100">Mon Parcours</h2>
+            <div class="relative">
+                <div class="absolute left-1/2 transform -translate-x-1/2 w-0.5 bg-purple-500 h-full"></div>
+                <div class="space-y-8 relative">
+                    <div class="flex items-center w-full">
+                        <div class="w-1/2 pr-8 text-right">
+                            <div class="bg-gray-50 dark:bg-gray-800 p-6 rounded-lg shadow-md">
+                                <h3 class="text-xl font-bold mb-2 text-purple-200">Licence PCSI Physique Chimie Sciences de l'Ingenierie</h3>
+                                <p class="text-gray-600 dark:text-gray-300">Option Génie électrique </p>
+                                <p class="text-sm text-gray-500">2020-2023 U.F.R. Sciences et Techniques - CY Université Cergy-Pontoise </p>
+                            </div>
+                        </div>
+                        <div class="absolute left-1/2 transform -translate-x-1/2">
+                            <div class="w-6 h-6 bg-purple-100 rounded-full border-4 border-white dark:border-gray-800"></div>
+                        </div>
+                    </div>
+                    <div class="flex items-center w-full">
+                        <div class="w-1/2 pr-8 text-right"></div>
+                        <div class="w-1/2 pl-8">
+                            <div class="bg-gray-50 dark:bg-gray-800 p-6 rounded-lg shadow-md">
+                                <h3 class="text-xl font-bold mb-2 text-purple-200">BTS SIO SISR</h3>
+                                <p class="text-gray-600 dark:text-gray-300"> </p>
+                                <p class="text-sm text-gray-500">2023-2025 Campus Charles de Foucauld </p>
+                            </div>
+                        </div>
+                        <div class="absolute left-1/2 transform -translate-x-1/2">
+                            <div class="w-6 h-6 bg-purple-100 rounded-full border-4 border-white dark:border-gray-800"></div>
+                        </div>
+                    </div>
+    
+                    <div class="flex items-center w-full">
+                        <div class="w-1/2 pr-8 text-right">
+                            <div class="bg-gray-50 dark:bg-gray-800 p-6 rounded-lg shadow-md">
+                                <h3 class="text-xl font-bold mb-2 text-purple-200">A SUIVRE</h3>
+                                <p class="text-gray-600 dark:text-gray-300">...</p>
+                                <p class="text-sm text-gray-500">X | X</p>
+                            </div>
+                        </div>
+                        <div class="absolute left-1/2 transform -translate-x-1/2">
+                            <div class="w-6 h-6 bg-purple-10 rounded-full border-2 border-white dark:border-purple-500"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+
+
+
+
+    
+    <section id="skills" class="py-24 bg-gray-50 dark:bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4">
+            <h2 class="text-4xl font-bold text-center mb-16 dark:text-white">Compétences</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Réseaux -->
+                <div class="bg-white dark:bg-gray-900 p-8 rounded-xl shadow-lg">
+                    <div class="flex items-center mb-6">
+                        <div class="bg-blue-100 dark:bg-blue-900 p-3 rounded-lg">
+                            <svg class="w-8 h-8 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold ml-4 dark:text-white">🖧 Réseaux</h3>
+                    </div>
+                    <ul class="space-y-3 text-gray-600 dark:text-gray-300">
+                        <li class="relative before:absolute before:left-0 before:bottom-0 before:w-0 before:h-1 before:bg-purple-500 before:transition-all before:duration-300 hover:before:w-full">TCP/IP, DHCP, DNS, VLAN, VPN</li>
+                        <li class="relative before:absolute before:left-0 before:bottom-0 before:w-0 before:h-1 before:bg-purple-500 before:transition-all before:duration-300 hover:before:w-full">Configuration des routeurs et switchs Cisco</li>
+                        <li class="relative before:absolute before:left-0 before:bottom-0 before:w-0 before:h-1 before:bg-purple-500 before:transition-all before:duration-300 hover:before:w-full">Wireshark, Nagios</li>
+                        <li class="relative before:absolute before:left-0 before:bottom-0 before:w-0 before:h-1 before:bg-purple-500 before:transition-all before:duration-300 hover:before:w-full">Active Directory, RADIUS, Proxy</li>
+                        <li class="relative before:absolute before:left-0 before:bottom-0 before:w-0 before:h-1 before:bg-purple-500 before:transition-all before:duration-300 hover:before:w-full">Sécurisation Wi-Fi : WPA2/WPA3, 802.1X, Captive Portal</li>
+                    </ul>
+                </div>
+                <!-- Systèmes -->
+                <div class="bg-white dark:bg-gray-900 p-8 rounded-xl shadow-lg">
+                    <div class="flex items-center mb-6">
+                        <div class="bg-green-100 dark:bg-green-900 p-3 rounded-lg">
+                            <svg class="w-8 h-8 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                    d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold ml-4 dark:text-white">💻 Systèmes</h3>
+                    </div>
+                    <ul class="space-y-3 text-gray-600 dark:text-gray-300">
+                        <li class="relative before:absolute before:left-0 before:bottom-0 before:w-0 before:h-1 before:bg-purple-500 before:transition-all before:duration-300 hover:before:w-full">VMware, Hyper-V</li>
+                        <li class="relative before:absolute before:left-0 before:bottom-0 before:w-0 before:h-1 before:bg-purple-500 before:transition-all before:duration-300 hover:before:w-full">Déploiement et maintenance des serveurs (AD, DNS, DHCP)</li>
+                        <li class="relative before:absolute before:left-0 before:bottom-0 before:w-0 before:h-1 before:bg-purple-500 before:transition-all before:duration-300 hover:before:w-full">Stockage et gestion des sauvegardes : NAS, RAID</li>
+                        <li class="relative before:absolute before:left-0 before:bottom-0 before:w-0 before:h-1 before:bg-purple-500 before:transition-all before:duration-300 hover:before:w-full">Supervision et optimisation des performances des serveurs</li>
+                        <li class="relative before:absolute before:left-0 before:bottom-0 before:w-0 before:h-1 before:bg-purple-500 before:transition-all before:duration-300 hover:before:w-full">Gestion des accès et permissions</li>
+                    </ul>
+                </div>
+                <!-- Sécurité des Réseaux & Cybersécurité -->
+                <div class="bg-white dark:bg-gray-900 p-8 rounded-xl shadow-lg">
+                    <div class="flex items-center mb-6">
+                        <div class="bg-purple-100 dark:bg-purple-900 p-3 rounded-lg">
+                            <svg class="w-8 h-8 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                    d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold ml-4 dark:text-white">🔒 Cybersécurité</h3>
+                    </div>
+                    <ul class="space-y-3 text-gray-600 dark:text-gray-300">
+                        <li class="relative before:absolute before:left-0 before:bottom-0 before:w-0 before:h-1 before:bg-purple-500 before:transition-all before:duration-300 hover:before:w-full">Firewall : Sophos, IDS/IPS</li>
+                        <li class="relative before:absolute before:left-0 before:bottom-0 before:w-0 before:h-1 before:bg-purple-500 before:transition-all before:duration-300 hover:before:w-full">VPN, SSL/TLS, SSH, SFTP, WPA2/WPA3, RADIUS</li>
+                        <li class="relative before:absolute before:left-0 before:bottom-0 before:w-0 before:h-1 before:bg-purple-500 before:transition-all before:duration-300 hover:before:w-full">Analyse des vulnérabilités</li>
+                        <li class="relative before:absolute before:left-0 before:bottom-0 before:w-0 before:h-1 before:bg-purple-500 before:transition-all before:duration-300 hover:before:w-full">Pentesting et tests d'intrusion (Kali Linux)</li>
+                        <li class="relative before:absolute before:left-0 before:bottom-0 before:w-0 before:h-1 before:bg-purple-500 before:transition-all before:duration-300 hover:before:w-full">CTF (Capture The Flag) et audits de sécurité</li>
+                        <li class="relative before:absolute before:left-0 before:bottom-0 before:w-0 before:h-1 before:bg-purple-500 before:transition-all before:duration-300 hover:before:w-full">Surveillance avec SIEM, EDR/XDR</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+
+
+
+
+    <section id="projects" class="py-24 bg-gray-50 dark:bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4">
+            <h2 class="text-4xl font-bold text-center mb-16 dark:text-white">Projets</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Projet 1 -->
+                <div class="project-card bg-white dark:bg-gray-700 rounded-xl overflow-hidden shadow-lg transition-transform duration-300 hover:-translate-y-2" 
+                     onclick="openModal('project1')">
+                    <img src="img/logojava1.webp" alt="Projet 1" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-3 dark:text-white">PPE Application Personnel</h3>
+                        <p class="text-gray-600 dark:text-gray-300 mb-4">
+                          Application Java pour la gestion du personnel des ligues de la M2L.
+                        </p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="px-3 py-1 bg-blue-100 text-blue-600 dark:bg-blue-900 dark:text-blue-300 rounded-full text-sm">Java</span>
+                            <span class="px-3 py-1 bg-green-100 text-green-600 dark:bg-green-900 dark:text-green-300 rounded-full text-sm">MySql</span>
+                            <span class="px-3 py-1 bg-yellow-100 text-yellow-600 dark:bg-yellow-900 dark:text-yellow-300 rounded-full text-sm">JDBC</span>
+                        </div>
+                    </div>
+                </div>
+      
+                <!-- Projet 2 -->
+                <div class="project-card bg-white dark:bg-gray-700 rounded-xl overflow-hidden shadow-lg transition-transform duration-300 hover:-translate-y-2" 
+                     onclick="openModal('project2')">
+                    <img src="projets/parking.png" alt="Projet 2" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-3 dark:text-white">PPE PARKING</h3>
+                        <p class="text-gray-600 dark:text-gray-300 mb-4">
+                          Application web Laravel pour la gestion d'un parking et des ses places
+                        </p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="px-3 py-1 bg-red-100 text-red-600 dark:bg-red-900 dark:text-red-300 rounded-full text-sm">Laravel</span>
+                            <span class="px-3 py-1 bg-blue-100 text-blue-600 dark:bg-blue-900 dark:text-blue-300 rounded-full text-sm">PHP</span>
+                            <span class="px-3 py-1 bg-green-100 text-green-600 dark:bg-green-900 dark:text-green-300 rounded-full text-sm">PostgreSQL</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Projet 3 -->
+                <div class="project-card bg-white dark:bg-gray-700 rounded-xl overflow-hidden shadow-lg transition-transform duration-300 hover:-translate-y-2" 
+                     onclick="openModal('project3')">
+                    <img src="img/devisS.jpg" alt="Projet 3" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-3 dark:text-white">TP Devis</h3>
+                        <p class="text-gray-600 dark:text-gray-300 mb-4">
+                            Ce projet consiste à assembler et configurer un ordinateur en sélectionnant des composants adaptés aux besoins en performance et en stabilité.
+                        </p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="px-3 py-1 bg-red-100 text-red-600 dark:bg-red-900 dark:text-red-300 rounded-full text-sm">Laravel</span>
+                            <span class="px-3 py-1 bg-blue-100 text-blue-600 dark:bg-blue-900 dark:text-blue-300 rounded-full text-sm">PHP</span>
+                            <span class="px-3 py-1 bg-purple-100 text-purple-600 dark:bg-purple-900 dark:text-purple-300 rounded-full text-sm">PostgreSQL</span>
+                            <span class="px-3 py-1 bg-green-100 text-green-600 dark:bg-green-900 dark:text-green-300 rounded-full text-sm">API</span>
+                            <span class="px-3 py-1 bg-yellow-100 text-yellow-600 dark:bg-yellow-900 dark:text-yellow-300 rounded-full text-sm">CI/CD</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Projet 4 -->
+      <div class="project-card bg-white dark:bg-gray-700 rounded-xl overflow-hidden shadow-lg transition-transform duration-300 hover:-translate-y-2" 
+      onclick="openModal('project4')">
+      <img src="img/wx.jpg" alt="Projet Python 4" class="w-full h-48 object-cover">
+      <div class="p-6">
+         <h3 class="text-xl font-bold mb-3 dark:text-white">Windows Server M2L</h3>
+         <p class="text-gray-600 dark:text-gray-300 mb-4">
+            Mise en place de l'infrastructure Windows Server pour la M2L.
+         </p>
+         <div class="flex flex-wrap gap-2 mb-4">
+          <span class="px-3 py-1 bg-orange-100 text-orange-600 dark:bg-orange-900 dark:text-orange-300 rounded-full text-sm">Active Directory (AD DS)</span>
+          <span class="px-3 py-1 bg-purple-100 text-purple-600 dark:bg-purple-900 dark:text-purple-300 rounded-full text-sm">Gestion des utilisateurs et GPO</span>
+          <span class="px-3 py-1 bg-green-100 text-green-600 dark:bg-green-900 dark:text-green-300 rounded-full text-sm">DHCP</span>
+          <span class="px-3 py-1 bg-yellow-100 text-yellow-600 dark:bg-yellow-900 dark:text-yellow-300 rounded-full text-sm">DNS</span>
+      </div>
+      </div>
+      </div>
+      
+      <!-- Projet 5 -->
+      <div class="project-card bg-white dark:bg-gray-700 rounded-xl overflow-hidden shadow-lg transition-transform duration-300 hover:-translate-y-2" 
+      onclick="openModal('project5')">
+      <img src="img/cisco.webp" alt="Infrastructure M2L" class="w-full h-48 object-cover">
+      <div class="p-6">
+         <h3 class="text-xl font-bold mb-3 dark:text-white">Infrastructure M2L</h3>
+         <p class="text-gray-600 dark:text-gray-300 mb-4">
+            Conception et mise en place d’une infrastructure réseau sécurisée et redondante pour l’organisation M2L.
+         </p>
+         <div class="flex flex-wrap gap-2">
+             <span class="px-3 py-1 bg-red-100 text-red-600 dark:bg-red-900 dark:text-red-300 rounded-full text-sm">CISCO 2960</span>
+             <span class="px-3 py-1 bg-blue-100 text-blue-600 dark:bg-blue-900 dark:text-blue-300 rounded-full text-sm">CISCO 2800</span>
+             <span class="px-3 py-1 bg-purple-100 text-purple-600 dark:bg-purple-900 dark:text-purple-300 rounded-full text-sm">PacketTracer</span>
+         </div>
+      </div>
+      </div>
+      
+      <!-- Projet 6 -->
+      <div class="project-card bg-white dark:bg-gray-700 rounded-xl overflow-hidden shadow-lg transition-transform duration-300 hover:-translate-y-2" 
+      onclick="openModal('project6')">
+      <img src="img/logo7.webp" alt="TP SEVEN" class="w-full h-48 object-cover">
+      <div class="p-6">
+         <h3 class="text-xl font-bold mb-3 dark:text-white">TP SEVEN</h3>
+         <p class="text-gray-600 dark:text-gray-300 mb-4">
+            Création et gestion des comptes utilisateurs sous Windows 7, attribution de permissions et configuration du partage de fichiers en réseau.
+         </p>
+         <div class="flex flex-wrap gap-2">
+          <span class="px-3 py-1 bg-gray-100 text-gray-600 dark:bg-gray-900 dark:text-gray-300 rounded-full text-sm">Windows 7</span>
+         </div>
+      </div>
+      </div>
+      
+      <!-- Projet 7 -->
+      <div class="project-card bg-white dark:bg-gray-700 rounded-xl overflow-hidden shadow-lg transition-transform duration-300 hover:-translate-y-2" 
+      onclick="openModal('project7')">
+      <img src="img/Logo_Avenir_gb.png" alt="Config mac readme" class="w-full h-48 object-cover">
+      <div class="p-6">
+         <h3 class="text-xl font-bold mb-3 dark:text-white">STAGE 1ER ANNÉE</h3>
+         <p class="text-gray-600 dark:text-gray-300 mb-4">
+             Avenir APEI, 78420 Carrières-sur-Seine
+         </p>
+         <div class="flex flex-wrap gap-2 mb-4">
+             <span class="px-3 py-1 bg-blue-100 text-blue-600 dark:bg-blue-900 dark:text-blue-300 rounded-full text-sm">MacOS</span>
+             <span class="px-3 py-1 bg-cyan-100 text-cyan-600 dark:bg-cyan-900 dark:text-cyan-300 rounded-full text-sm">Docker</span>
+             <span class="px-3 py-1 bg-yellow-100 text-yellow-600 dark:bg-yellow-900 dark:text-yellow-300 rounded-full text-sm">Lima VM</span>
+             <span class="px-3 py-1 bg-green-100 text-green-600 dark:bg-green-900 dark:text-green-300 rounded-full text-sm">Git</span>
+         </div>
+      </div>
+      </div>
+      
+      <!-- Projet 8 -->
+      <div class="project-card bg-white dark:bg-gray-700 rounded-xl overflow-hidden shadow-lg transition-transform duration-300 hover:-translate-y-2" 
+      onclick="openModal('project8')">
+      <img src="img/Logo_Gennevilliers.svg" alt="Doc C2SM" class="w-full h-48 object-cover">
+      <div class="p-6">
+         <h3 class="text-xl font-bold mb-3 dark:text-white">STAGE 2ÈME ANNÉE </h3>
+         <p class="text-gray-600 dark:text-gray-300 mb-4">
+             Mairie de Gennevilliers,92230
+         </p>
+         <div class="flex flex-wrap gap-2 mb-4">
+             <span class="px-3 py-1 bg-green-100 text-green-600 dark:bg-green-900 dark:text-green-300 rounded-full text-sm">Docker</span>
+             <span class="px-3 py-1 bg-blue-100 text-blue-600 dark:bg-blue-900 dark:text-blue-300 rounded-full text-sm">Lima VM</span>
+             <span class="px-3 py-1 bg-purple-100 text-purple-600 dark:bg-purple-900 dark:text-purple-300 rounded-full text-sm">Git</span>
+             <span class="px-3 py-1 bg-red-100 text-red-600 dark:bg-red-900 dark:text-red-300 rounded-full text-sm">Linux</span>
+         </div>
+      </div>
+      </div>
+            </div>
+        </div>
+      
+      
+      
+        <!-- Sous Projet 1 -->
+        <div id="modal-project1" class="modal">
+            <div class="modal-content bg-white dark:bg-gray-800 rounded-xl p-6 max-w-4xl mx-4 relative">
+                <button onclick="closeModal('project1')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <img src="img/logojava1.webp" alt="Projet 1" class="w-full h-64 object-cover rounded-lg">
+                        <div class="grid grid-cols-3 gap-2 mt-2">
+                          <img src="img/scripte.png" alt="" class="w-full h-20 object-cover rounded-lg cursor-pointer hover:opacity-75 transition-opacity" onclick="openImageViewer(this.src)">
+                          <img src="img/MCDv2.JPG" alt="" class="w-full h-20 object-cover rounded-lg cursor-pointer hover:opacity-75 transition-opacity" onclick="openImageViewer(this.src)">
+                          <img src="img/arbrepng.png" alt="" class="w-full h-20 object-cover rounded-lg cursor-pointer hover:opacity-75 transition-opacity" onclick="openImageViewer(this.src)">
+                      </div>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold mb-4 dark:text-white">Application Personnel</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <h4 class="font-semibold text-lg mb-2 dark:text-white">Description</h4>
+                                <p class="text-gray-600 dark:text-gray-300">
+                                    Application Java pour la gestion du personnel des ligues de la M2L.
+                                </p>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-lg mb-2 dark:text-white">Technologies utilisées</h4>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="px-3 py-1 bg-blue-100 text-blue-600 dark:bg-blue-900 dark:text-blue-300 rounded-full text-sm">Java</span>
+                                    <span class="px-3 py-1 bg-green-100 text-green-600 dark:bg-green-900 dark:text-green-300 rounded-full text-sm">MySql</span>
+                                    <span class="px-3 py-1 bg-yellow-100 text-yellow-600 dark:bg-yellow-900 dark:text-yellow-300 rounded-full text-sm">JDBC</span>
+                                </div>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-lg mb-2 dark:text-white">Fonctionnalités clés</h4>
+                                <ul class="list-disc list-inside text-gray-600 dark:text-gray-300">
+                                    <li>Ajout Suppression Modification des employés</li>
+                                    <li>Ajout Suppression Modification des ligues</li>
+                                    <li>Ajout d'administrateurs</li>
+                                    <li>Connection à une base de données</li>
+                                    <li>Interface graphique</li>
+                                </ul>
+                            </div>
+                            <div class="flex gap-4 mt-6">
+                                <a href="https://github.com/UlysseMtr/personnel" target="_blank" class="bg-gray-200 text-gray-800 px-6 py-2 rounded-lg hover:bg-gray-300 transition-colors dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600">
+                                    Voir le code source
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+      
+        <!-- Sous Projet 2 -->
+        <div id="modal-project2" class="modal">
+            <div class="modal-content bg-white dark:bg-gray-800 rounded-xl p-6 max-w-4xl mx-4 relative">
+                <button onclick="closeModal('project2')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <img src="projets/parking.png" alt="Projet 2" class="w-full h-64 object-cover rounded-lg">
+                        <div class="grid grid-cols-3 gap-2 mt-2">
+                          <img src="projets/parking2.png" alt="" class="w-full h-20 object-cover rounded-lg cursor-pointer hover:opacity-75 transition-opacity" onclick="openImageViewer(this.src)">
+                          <img src="img/MCDv2.JPG" alt="" class="w-full h-20 object-cover rounded-lg cursor-pointer hover:opacity-75 transition-opacity" onclick="openImageViewer(this.src)">
+                          <img src="img/arbrepng.png" alt="" class="w-full h-20 object-cover rounded-lg cursor-pointer hover:opacity-75 transition-opacity" onclick="openImageViewer(this.src)">
+                      </div>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold mb-4 dark:text-white">PPE PARKING</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <h4 class="font-semibold text-lg mb-2 dark:text-white">Description</h4>
+                                <p class="text-gray-600 dark:text-gray-300">
+                                    Application web développée avec Laravel pour la gestion d'un parking et des ses places.
+                                </p>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-lg mb-2 dark:text-white">Technologies utilisées</h4>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="px-3 py-1 bg-red-100 text-red-600 dark:bg-red-900 dark:text-red-300 rounded-full text-sm">Laravel</span>
+                                    <span class="px-3 py-1 bg-blue-100 text-blue-600 dark:bg-blue-900 dark:text-blue-300 rounded-full text-sm">PHP</span>
+                                    <span class="px-3 py-1 bg-green-100 text-green-600 dark:bg-green-900 dark:text-green-300 rounded-full text-sm">PostgreSQL</span>
+                                </div>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-lg mb-2 dark:text-white">Fonctionnalités clés</h4>
+                                <ul class="list-disc list-inside text-gray-600 dark:text-gray-300">
+                                    <li>Authentification des utilisateurs</li>
+                                    <li>Demande de réservation de place</li>
+                                    <li>Tableau de bord administrateur</li>
+                                </ul>
+                            </div>
+                            <div class="flex gap-4 mt-6">
+                                <a href="https://github.com/UlysseMtr/ParkingAP" target="_blank" class="bg-gray-200 text-gray-800 px-6 py-2 rounded-lg hover:bg-gray-300 transition-colors dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600">
+                                    Voir le code source
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+      
+        <!-- Sous Projet 3 -->
+        <div id="modal-project3" class="modal">
+            <div class="modal-content bg-white dark:bg-gray-800 rounded-xl p-6 max-w-4xl mx-4 relative">
+                <button onclick="closeModal('project3')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <img src="img/devisS.jpg" alt="Projet 3" class="w-full h-64 object-cover rounded-lg">
+                   
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold mb-4 dark:text-white">TP Devis</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <h4 class="font-semibold text-lg mb-2 dark:text-white">Description</h4>
+                                <p class="text-gray-600 dark:text-gray-300">
+                                    Ce projet consiste à assembler et configurer un ordinateur en sélectionnant des composants adaptés aux besoins en performance et en stabilité.
+                                </p>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-lg mb-2 dark:text-white">Technologies utilisées</h4>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="px-3 py-1 bg-red-100 text-red-600 dark:bg-red-900 dark:text-red-300 rounded-full text-sm">Laravel</span>
+                                    <span class="px-3 py-1 bg-blue-100 text-blue-600 dark:bg-blue-900 dark:text-blue-300 rounded-full text-sm">PHP</span>
+                                    <span class="px-3 py-1 bg-purple-100 text-purple-600 dark:bg-purple-900 dark:text-purple-300 rounded-full text-sm">PostgreSQL</span>
+                                    <span class="px-3 py-1 bg-green-100 text-green-600 dark:bg-green-900 dark:text-green-300 rounded-full text-sm">API</span>
+                                    <span class="px-3 py-1 bg-yellow-100 text-yellow-600 dark:bg-yellow-900 dark:text-yellow-300 rounded-full text-sm">CI/CD</span>
+                                </div>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-lg mb-2 dark:text-white">Fonctionnalités clés</h4>
+                                <ul class="list-disc list-inside text-gray-600 dark:text-gray-300">
+                                    <li>Utilisation de l'API de Sellsy</li>
+                                    <li>Fork d'une librairie PHP existante et amélioration</li>
+                                    <li>Intégration continue et déploiement continu</li>
+                                    <li>Base de données PostgreSQL</li>
+                                </ul>
+                            </div>
+                            <div class="flex gap-4 mt-6">
+                                <a href="#" target="_blank" class="bg-gray-200 text-gray-800 px-6 py-2 rounded-lg hover:bg-gray-300 transition-colors dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600">
+                                    Voir le projet
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Sous Projet 4 -->
+      <div id="modal-project4" class="modal">
+          <div class="modal-content bg-white dark:bg-gray-800 rounded-xl p-6 max-w-4xl mx-4 relative">
+              <button onclick="closeModal('project4')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
+                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                  </svg>
+              </button>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div>
+                      <img src="img/wx.jpg" alt="Windows Server M2L" class="w-full h-64 object-cover rounded-lg">
+                  </div>
+                  <div>
+                      <h3 class="text-2xl font-bold mb-4 dark:text-white">Windows Server M2L</h3>
+                      <div class="space-y-4">
+                          <div>
+                              <h4 class="font-semibold text-lg mb-2 dark:text-white">Description</h4>
+                              <p class="text-gray-600 dark:text-gray-300">
+                                Mise en place de l'infrastructure Windows Server pour la M2L.
+                              </p>
+                          </div>
+                          <div>
+                              <h4 class="font-semibold text-lg mb-2 dark:text-white">Technologies utilisées</h4>
+                              <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 bg-orange-100 text-orange-600 dark:bg-orange-900 dark:text-orange-300 rounded-full text-sm">Active Directory (AD DS)</span>
+                                <span class="px-3 py-1 bg-purple-100 text-purple-600 dark:bg-purple-900 dark:text-purple-300 rounded-full text-sm">Gestion des utilisateurs et GPO</span>
+                                <span class="px-3 py-1 bg-green-100 text-green-600 dark:bg-green-900 dark:text-green-300 rounded-full text-sm">DHCP</span>
+                                <span class="px-3 py-1 bg-yellow-100 text-yellow-600 dark:bg-yellow-900 dark:text-yellow-300 rounded-full text-sm">DNS</span>                              </div>
+                          </div>
+                          <div>
+                              <h4 class="font-semibold text-lg mb-2 dark:text-white">Fonctionnalités clés</h4>
+                              <ul class="list-disc list-inside text-gray-600 dark:text-gray-300">
+                                  <li>Centralisation des comptes utilisateurs, groupes et permissions.</li>
+                                  <li>Application de stratégies de sécurité et de configuration sur les postes.</li>
+                                  <li>Attribution automatique des adresses IP aux machines du réseau.</li>
+                                  <li>Résolution des noms de domaine pour la communication interne.</li>
+                              </ul>
+                          </div>
+                          <div class="flex gap-4 mt-6">
+                            <a href="projets/Windows srv.pdf" target="_blank" class="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition-colors">
+                                Voir la documentation
+                              </a>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+      
+      <!-- Sous Projet 5 -->
+      <div id="modal-project5" class="modal">
+          <div class="modal-content bg-white dark:bg-gray-800 rounded-xl p-6 max-w-4xl mx-4 relative">
+              <button onclick="closeModal('project5')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
+                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                  </svg>
+              </button>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div>
+                      <img src="img/cisco.webp" alt="API REST" class="w-full h-64 object-cover rounded-lg">
+                  </div>
+                  <div>
+                      <h3 class="text-2xl font-bold mb-4 dark:text-white">Infrastructure M2L</h3>
+                      <div class="space-y-4">
+                          <div>
+                              <h4 class="font-semibold text-lg mb-2 dark:text-white">Description</h4>
+                              <p class="text-gray-600 dark:text-gray-300">
+                                Conception et mise en place d’une infrastructure réseau sécurisée et redondante pour l’organisation M2L.
+                              </p>
+                          </div>
+                          <div>
+                              <h4 class="font-semibold text-lg mb-2 dark:text-white">Choix des équipements Cisco</h4>
+                              <div class="flex flex-wrap gap-2">
+                                  <span class="px-3 py-1 bg-red-100 text-red-600 dark:bg-red-900 dark:text-red-300 rounded-full text-sm">Switchs Cisco 2960</span>
+                                  <span class="px-3 py-1 bg-blue-100 text-blue-600 dark:bg-blue-900 dark:text-blue-300 rounded-full text-sm">Routeurs Cisco 2800</span>
+
+                              </div>
+                          </div>
+                          <div>
+                              <h4 class="font-semibold text-lg mb-2 dark:text-white">Protocoles clés</h4>
+                              <ul class="list-disc list-inside text-gray-600 dark:text-gray-300">
+                                  <li>HSRP (Hot Standby Router Protocol)</li>
+                                  <li>Rapid PVST+ (Spanning Tree Protocol)</li>
+                                  <li>OSPF (Open Shortest Path First)</li>
+                                  <li>DHCP Helper (ip helper-address)</li>
+                                  <li>VLAN (Virtual Local Area Network)</li>
+                              </ul>
+                          </div>
+                          <div class="flex gap-4 mt-6">
+                              <a href="projets/INFRA M2L.pdf" target="_blank" class="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition-colors">
+                                  Voir la documentation
+                              </a>
+                              <a href="projets/E6 finale.pkt" target="_blank" class="bg-gray-200 text-gray-800 px-6 py-2 rounded-lg hover:bg-gray-300 transition-colors dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600">
+                                  Voir le PacketTracer
+                              </a>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+      
+      <!-- Sous Projet 6 -->
+      <div id="modal-project6" class="modal">
+          <div class="modal-content bg-white dark:bg-gray-800 rounded-xl p-6 max-w-4xl mx-4 relative">
+              <button onclick="closeModal('project6')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
+                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                  </svg>
+              </button>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div>
+                      <img src="img/logo7.webp" alt="Application Mobile" class="w-full h-64 object-cover rounded-lg">
+                  </div>
+                  <div>
+                      <h3 class="text-2xl font-bold mb-4 dark:text-white">TP SEVEN</h3>
+                      <div class="space-y-4">
+                          <div>
+                              <h4 class="font-semibold text-lg mb-2 dark:text-white">Description</h4>
+                              <p class="text-gray-600 dark:text-gray-300">
+                                Création et gestion des comptes utilisateurs sous Windows 7, attribution de permissions et configuration du partage de fichiers en réseau.
+                              </p>
+                          </div>
+                          <div>
+                              <h4 class="font-semibold text-lg mb-2 dark:text-white">Technologie utilisé</h4>
+                              <div class="flex flex-wrap gap-2">
+                                  <span class="px-3 py-1 bg-gray-100 text-gray-600 dark:bg-gray-900 dark:text-gray-300 rounded-full text-sm">Windows 7</span>
+                              </div>
+                          </div>
+                          <div>
+                              <h4 class="font-semibold text-lg mb-2 dark:text-white">Etapes réalisées</h4>
+                              <ul class="list-disc list-inside text-gray-600 dark:text-gray-300">
+                                  <li>Création d'utilisateurs</li>
+                                  <li>Bloquer le changement de mot de passe</li>
+                                  <li>Configuration des utilisateurs</li>
+                                  <li>Trouver configuration IP</li>
+                                  <li>Créer un lecteur logique</li>
+                              </ul>
+                          </div>
+                          <div class="flex gap-4 mt-6">
+                              <a href="projets/tp-seven-anseur.pdf" target="_blank" class="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition-colors">
+                                  Voir la documentation
+                              </a>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+      
+      <!-- Sous Projet 7 -->
+      <div id="modal-project7" class="modal">
+          <div class="modal-content bg-white dark:bg-gray-800 rounded-xl p-6 max-w-4xl mx-4 relative">
+              <button onclick="closeModal('project7')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
+                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                  </svg>
+              </button>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div>
+                      <img src="img/Logo_Avenir_gb.png" alt="Config mac readme" class="w-full h-64 object-cover rounded-lg">
+                      <div class="grid grid-cols-2 gap-2 mt-2">
+                          <img src="projets/configmac2.png" alt="Configuration MacOS" class="w-full h-20 object-cover rounded-lg cursor-pointer hover:opacity-75 transition-opacity" onclick="openImageViewer(this.src)">
+                          <img src="projets/configmac3.png" alt="Lima VM Configuration" class="w-full h-20 object-cover rounded-lg cursor-pointer hover:opacity-75 transition-opacity" onclick="openImageViewer(this.src)">
+                          <img src="projets/configmac4.png" alt="Docker Setup" class="w-full h-20 object-cover rounded-lg cursor-pointer hover:opacity-75 transition-opacity" onclick="openImageViewer(this.src)">
+                          <img src="projets/configmac5.png" alt="Terminal Setup" class="w-full h-20 object-cover rounded-lg cursor-pointer hover:opacity-75 transition-opacity" onclick="openImageViewer(this.src)">
+                      </div>
+                  </div>
+                  <div>
+                      <h3 class="text-2xl font-bold mb-4 dark:text-white">Documentation Workstation MacOS (Stage MC-MEDIA)</h3>
+                      <div class="space-y-4">
+                          <div>
+                              <h4 class="font-semibold text-lg mb-2 dark:text-white">Description</h4>
+                              <p class="text-gray-600 dark:text-gray-300">
+                                  Création d'une documentation pour la configuration d'une workstation MacOS.
+                              </p>
+                          </div>
+                          <div>
+                              <h4 class="font-semibold text-lg mb-2 dark:text-white">Technologies utilisées</h4>
+                              <div class="flex flex-wrap gap-2">
+                                  <span class="px-3 py-1 bg-blue-100 text-blue-600 dark:bg-blue-900 dark:text-blue-300 rounded-full text-sm">MacOS</span>
+                                  <span class="px-3 py-1 bg-cyan-100 text-cyan-600 dark:bg-cyan-900 dark:text-cyan-300 rounded-full text-sm">Docker</span>
+                                  <span class="px-3 py-1 bg-yellow-100 text-yellow-600 dark:bg-yellow-900 dark:text-yellow-300 rounded-full text-sm">Lima VM</span>
+                                  <span class="px-3 py-1 bg-green-100 text-green-600 dark:bg-green-900 dark:text-green-300 rounded-full text-sm">Homebrew</span>
+                              </div>
+                          </div>
+                          <div>
+                              <h4 class="font-semibold text-lg mb-2 dark:text-white">Points clés abordés</h4>
+                              <ul class="list-disc list-inside text-gray-600 dark:text-gray-300">
+                                  <li>Installation des outils de développement</li>
+                                  <li>Configuration de l'environnement Docker</li>
+                                  <li>Mise en place de Lima VM</li>
+                                  <li>Configuration du terminal et des outils CLI</li>
+                                  <li>Sécurisation de l'environnement de travail</li>
+                              </ul>
+                          </div>
+                          <div class="flex gap-4 mt-6">
+                              <a href="projets/configmacdoc.pdf" target="_blank" class="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition-colors">
+                                  Voir la documentation
+                              </a>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+      
+      <!-- Sous Projet 8 -->
+      <div id="modal-project8" class="modal">
+          <div class="modal-content bg-white dark:bg-gray-800 rounded-xl p-6 max-w-4xl mx-4 relative">
+              <button onclick="closeModal('project8')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
+                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                  </svg>
+              </button>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div>
+                      <img src="img/Logo_Gennevilliers.svg" alt="Doc C2SM" class="w-full h-64 object-cover rounded-lg">
+                      <div class="grid grid-cols-2 gap-2 mt-2">
+                          <img src="projets/docc2sm.png" alt="Configuration MacOS" class="w-full h-20 object-cover rounded-lg cursor-pointer hover:opacity-75 transition-opacity" onclick="openImageViewer(this.src)">
+                          <img src="projets/docc2sm2.png" alt="Lima VM Configuration" class="w-full h-20 object-cover rounded-lg cursor-pointer hover:opacity-75 transition-opacity" onclick="openImageViewer(this.src)">
+                      </div>
+                  </div>
+                  <div>
+                      <h3 class="text-2xl font-bold mb-4 dark:text-white">Documentation de l'environnement de développement (Stage MC-MEDIA)</h3>
+                      <div class="space-y-4">
+                          <div>
+                              <h4 class="font-semibold text-lg mb-2 dark:text-white">Description</h4>
+                              <p class="text-gray-600 dark:text-gray-300">
+                                  Documentation de l'environnement de développement pour l'application web d'aide à la facturation.
+                              </p>
+                          </div>
+                          <div>
+                              <h4 class="font-semibold text-lg mb-2 dark:text-white">Technologies utilisées</h4>
+                              <div class="flex flex-wrap gap-2">
+                                  <span class="px-3 py-1 bg-green-100 text-green-600 dark:bg-green-900 dark:text-green-300 rounded-full text-sm">Docker</span>
+                                  <span class="px-3 py-1 bg-blue-100 text-blue-600 dark:bg-blue-900 dark:text-blue-300 rounded-full text-sm">Lima VM</span>
+                                  <span class="px-3 py-1 bg-purple-100 text-purple-600 dark:bg-purple-900 dark:text-purple-300 rounded-full text-sm">Git</span>
+                                  <span class="px-3 py-1 bg-red-100 text-red-600 dark:bg-red-900 dark:text-red-300 rounded-full text-sm">Linux</span>
+                              </div>
+                          </div>
+                          <div>
+                              <h4 class="font-semibold text-lg mb-2 dark:text-white">Points clés abordés</h4>
+                              <ul class="list-disc list-inside text-gray-600 dark:text-gray-300">
+                                  <li>Installation de l'environnement de développement</li>
+                                  <li>Configuration de Docker et Lima VM</li>
+                                  <li>Mise en place du système de contrôle de version Git</li>
+                                  <li>Configuration de l'environnement Linux</li>
+                                  <li>Procédures de déploiement</li>
+                              </ul>
+                          </div>
+                          <div class="flex gap-4 mt-6">
+                              <a href="projets/docc2sm.pdf" target="_blank" class="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition-colors">
+                                  Voir la documentation
+                              </a>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+      </section>
+
+<section id="veille" class="py-24 bg-gray-50 dark:bg-gray-800">
+  <div class="max-w-7xl mx-auto px-4">
+      <h2 class="text-4xl font-bold text-center mb-16 dark:text-white">Veille Technologique</h2>
+      <div class="bg-white dark:bg-gray-900 rounded-xl shadow-lg p-8">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div>
+                  <h3 class="text-2xl font-bold mb-6 dark:text-white">Ma Veille Technologique</h3>
+                  <p class="text-gray-600 dark:text-gray-300 mb-6">
+                      Je réalise ma veille technologique en utilisant principalement Google Alerts. 
+                      Cela me permet de suivre efficacement les dernières actualités et innovations dans le domaine des processeurs arm de chez Apple.
+                  </p>
+                  <p class="text-gray-600 dark:text-gray-300 mb-6">
+                      Je me concentre particulièrement sur les sujets suivants :
+                  </p>
+                  <ul class="list-disc list-inside text-gray-600 dark:text-gray-300 mb-6">
+                      <li>Optimisation des performances</li>
+                      <li>Sécurité des processeurs</li>
+                      <li>SoC (System-on-Chip)</li>
+                  </ul>
+              </div>
+              <div class="space-y-6">
+                  <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-6">
+                      <div class="flex items-center mb-4">
+                          <img src="img/ga.png" alt="Google Alerts" class="w-15 h-12">
+                          <h4 class="text-xl font-bold ml-4 dark:text-white">Google Alerts</h4>
+                      </div>
+                      <p class="text-gray-600 dark:text-gray-300">
+                          Mon outil principal pour organiser et suivre mes sources d'information techniques
+                      </p>
+                  </div>
+                  <img src="img/apple.jpg" alt="Capture d'écran de ma veille" class="rounded-lg shadow-md w-full">
+              </div>
+          </div>
+      </div>
+  </div>
+</section>
+<section id="e4" class="py-24 bg-white dark:bg-gray-900">
+    <div class="max-w-7xl mx-auto px-4">
+        <h2 class="text-4xl font-bold text-center mb-16 dark:text-white">Épreuve E4</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+            <div class="space-y-6">
+                <h3 class="text-2xl font-bold dark:text-white">L'épreuve E4 du BTS SIO</h3>
+                <p class="text-gray-600 dark:text-gray-300">
+                    L'épreuve E4 est une épreuve professionnelle du BTS SIO. Elle permet d'évaluer les compétences acquises en développement d'applications et en gestion de projets informatiques.
+                </p>
+                <p class="text-gray-600 dark:text-gray-300">
+                    Cette épreuve se compose de la présentation d'un projet développé en stage ou en formation, ainsi que d'une analyse de la démarche de projet et des choix techniques effectués.
+                </p>
+                <div class="flex gap-4">
+                    <a href="projets/tableau.pdf" target="_blank" class="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition duration-300 inline-block">
+                        Voir le tableau de compétences
+                    </a>
+                    <a href="projets/Documentation-Installation:Configuration-AI-Engine.pdf" target="_blank" class="bg-green-500 text-white px-6 py-3 rounded-lg hover:bg-green-600 transition duration-300 inline-block">
+                        Documentation de stage
+                    </a>
+                </div>
+            </div>
+            <div class="relative">
+                <img src="img/tableau.png" alt="Tableau de compétences E4" class="rounded-lg shadow-lg cursor-pointer hover:opacity-90 transition-opacity" onclick="openImageModal()">
+            </div>
+        </div>
+    </div>
+</section>
+<div id="imageModal" class="modal">
+    <div class="modal-content max-w-4xl mx-auto p-4">
+        <button onclick="closeImageModal()" class="absolute top-4 right-4 text-white">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+        </button>
+        <img src="path/to/your/e4-image.jpg" alt="Tableau de compétences E4" class="w-full h-auto">
+    </div>
+</div>
+<section id="contact" class="py-24 bg-gray-50 dark:bg-gray-800">
+  <div class="max-w-7xl mx-auto px-4">
+      <h2 class="text-4xl font-bold text-center mb-16 dark:text-white">Contact</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+          <div class="space-y-8">
+              <div class="bg-white dark:bg-gray-700 p-6 rounded-xl">
+                  <h3 class="text-2xl font-bold mb-6 dark:text-white">Restons en contact</h3>
+                  <div class="space-y-4">
+                      <div class="flex items-center">
+                          <div class="bg-blue-100 dark:bg-blue-900 p-3 rounded-full">
+                              <svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                              </svg>
+                          </div>
+                          <div class="ml-4">
+                              <p class="text-sm text-gray-600 dark:text-gray-300">Email</p>
+                              <p class="font-medium dark:text-white">anseur951@gmail.com</p>
+                          </div>
+                      </div>
+                      <div class="flex items-center">
+                          <div class="bg-green-100 dark:bg-green-900 p-3 rounded-full">
+                              <svg class="w-6 h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                              </svg>
+                          </div>
+                          <div class="ml-4">
+                              <p class="text-sm text-gray-600 dark:text-gray-300">Localisation</p>
+                              <p class="font-medium dark:text-white">Paris, France</p>
+                          </div>
+                      </div>
+                      <div class="flex items-center">
+                          <div class="bg-purple-100 dark:bg-purple-900 p-3 rounded-full">
+                              <svg class="w-6 h-6 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+                              </svg>
+                          </div>
+                          <div class="ml-4">
+                              <p class="text-sm text-gray-600 dark:text-gray-300">Disponibilité</p>
+                              <p class="font-medium dark:text-white">Lun-Ven, 9h-18h</p>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="mt-8">
+                      <h4 class="text-lg font-semibold mb-4 dark:text-white">Réseaux sociaux</h4>
+                      <div class="flex space-x-4">
+                          <a href="https://github.com/Aans951" target="_blank" class="bg-gray-100 dark:bg-gray-600 p-3 rounded-full hover:bg-gray-200 dark:hover:bg-gray-500 transition-colors">
+                              <svg class="w-5 h-5 text-gray-700 dark:text-gray-300" fill="currentColor" viewBox="0 0 24 24">
+                                  <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                              </svg>
+                          </a>
+                          <a href="https://www.linkedin.com/in/MohamedAnseur/" target="_blank" class="bg-gray-100 dark:bg-gray-600 p-3 rounded-full hover:bg-gray-200 dark:hover:bg-gray-500 transition-colors">
+                              <svg class="w-5 h-5 text-gray-700 dark:text-gray-300" fill="currentColor" viewBox="0 0 24 24">
+                                  <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                              </svg>
+                          </a>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <div class="bg-white dark:bg-gray-700 p-6 rounded-xl">
+              <form class="space-y-6">
+                  <div>
+                      <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Nom complet</label>
+                      <input type="text" id="name" name="name" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent dark:bg-gray-800 dark:text-white" placeholder="Votre nom">
+                  </div>
+                  <div>
+                      <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Email</label>
+                      <input type="email" id="email" name="email" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent dark:bg-gray-800 dark:text-white" placeholder="votre@email.com">
+                  </div>
+                  <div>
+                      <label for="subject" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Sujet</label>
+                      <input type="text" id="subject" name="subject" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent dark:bg-gray-800 dark:text-white" placeholder="Sujet de votre message">
+                  </div>
+                  <div>
+                      <label for="message" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Message</label>
+                      <textarea id="message" name="message" rows="4" class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent dark:bg-gray-800 dark:text-white resize-none" placeholder="Votre message"></textarea>
+                  </div>
+                  <button type="submit" class="w-full bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition-colors duration-300">
+                      Envoyer le message
+                  </button>
+              </form>
+          </div>
+      </div>
+  </div>
+</section>
+<!-- Footer -->
+<footer class="bg-white dark:bg-gray-900 text-gray-300">
+  <div class="max-w-7xl mx-auto px-4 py-12">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div>
+              <h3 class="text-white text-lg font-bold mb-4">ANSEUR Mohamed</h3>
+              <p class="mb-4">Étudiant en administration des réseaux, spécialisé dans la gestion et la sécurisation des infrastructures informatiques.</p>
+              <div class="flex space-x-4">
+                  <a href="https://github.com/Aans951" target="_blank" class="hover:text-white transition-colors">
+                      <span class="sr-only">GitHub</span>
+                      <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                      </svg>
+                  </a>
+                  <a href="https://www.linkedin.com/in/mohamedanseur/" target="_blank" class="hover:text-white transition-colors">
+                      <span class="sr-only">LinkedIn</span>
+                      <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                      </svg>
+                  </a>
+              </div>
+          </div>
+          <div>
+              <h3 class="text-white text-lg font-bold mb-4">Navigation</h3>
+              <ul class="space-y-2">
+                  <li><a href="#accueil" class="hover:text-white transition-colors">Accueil</a></li>
+                  <li><a href="#about" class="hover:text-white transition-colors">À propos</a></li>
+                  <li><a href="#bts" class="hover:text-white transition-colors">BTS SIO</a></li>
+                  <li><a href="#parcours" class="hover:text-white transition-colors">Parcours</a></li>
+                  <li><a href="#skills" class="hover:text-white transition-colors">Compétences</a></li>
+                  <li><a href="#projects" class="hover:text-white transition-colors">Projets</a></li>
+                  <li><a href="#veille" class="hover:text-white transition-colors">Veille Technologique</a></li>
+                  <li><a href="#e4" class="hover:text-white transition-colors">Epreuve E4</a></li>
+                  <li><a href="#contact" class="hover:text-white transition-colors">Contact</a></li>
+              </ul>
+          </div>
+          <div>
+              <h3 class="text-white text-lg font-bold mb-4">Contact</h3>
+              <ul class="space-y-2">
+                  <li class="flex items-center">
+                      <svg class="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                      </svg>
+                      anseur951@gmail.com
+                  </li>
+                  <li class="flex items-center">
+                      <svg class="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                      </svg>
+                      Paris, France
+                  </li>
+              </ul>
+          </div>
+      </div>
+      <div class="border-t border-gray-800 mt-8 pt-8 text-center">
+        <p>&copy; 2025 Mohamed ANSEUR. Tous droits réservés.</a></p>
+    </div>
+  </div>
+</footer>
+    <script>
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const themeToggleLight = document.getElementById('theme-toggle-light');
+        const themeToggleDark = document.getElementById('theme-toggle-dark');
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+            themeToggleLight.classList.remove('hidden');
+            themeToggleDark.classList.add('hidden');
+        } else {
+            document.documentElement.classList.remove('dark');
+            themeToggleLight.classList.add('hidden');
+            themeToggleDark.classList.remove('hidden');
+        }
+
+        themeToggleBtn.addEventListener('click', function() {
+            document.documentElement.classList.toggle('dark');
+            themeToggleLight.classList.toggle('hidden');
+            themeToggleDark.classList.toggle('hidden');
+            if (document.documentElement.classList.contains('dark')) {
+                localStorage.theme = 'dark';
+            } else {
+                localStorage.theme = 'light';
+            }
+        });
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+        function openModal(projectId) {
+        document.getElementById(`modal-${projectId}`).classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal(projectId) {
+        document.getElementById(`modal-${projectId}`).classList.remove('active');
+        document.body.style.overflow = 'auto';
+    }
+    window.onclick = function(event) {
+        if (event.target.classList.contains('modal')) {
+            event.target.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+    }
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+            const modals = document.getElementsByClassName('modal');
+            for (let modal of modals) {
+                modal.classList.remove('active');
+            }
+            document.body.style.overflow = 'auto';
+        }
+    });
+    function openImageViewer(imageSrc) {
+    const modal = document.getElementById('imageViewerModal');
+    const modalImage = document.getElementById('modalImage');
+    modalImage.src = imageSrc;
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+}
+
+function closeImageViewer() {
+    const modal = document.getElementById('imageViewerModal');
+    modal.style.display = 'none';
+    document.body.style.overflow = 'auto';
+}
+
+// Fermer avec Escape
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+        closeImageViewer();
+    }
+});
+
+// Fermer en cliquant en dehors de l'image
+document.getElementById('imageViewerModal').addEventListener('click', function(event) {
+    if (event.target === this) {
+        closeImageViewer();
+    }
+});
+    
+</script>
+<!--agrandissement des images -->
+<div id="imageViewerModal" class="modal" style="display: none;">
+    <div class="modal-content bg-transparent p-4">
+        <button onclick="closeImageViewer()" class="absolute top-2 right-2 text-white bg-gray-800 rounded-full p-2 hover:bg-gray-700 z-50">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+        </button>
+        <img id="modalImage" src="" alt="Image agrandie" class="rounded-lg shadow-xl">
+    </div>
+</div>
+</body>
+</html>
